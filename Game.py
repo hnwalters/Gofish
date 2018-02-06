@@ -1,4 +1,5 @@
-from GoFish.Deck import Deck
+#import pdb; pdb.set_trace()
+from Deck import Deck
 from random import randint
 
 def main():
@@ -14,17 +15,17 @@ def init():
         computer_hand.append(deck.deal())
         human_hand.append(deck.deal())
         
-    play(computer_hand, human_hand)
+    play(computer_hand, human_hand, deck)
 
 def check_four_kind(hand):
     fourkind = [card for card in hand if hand.count(card) == 4]
     if fourkind:
         for card in fourkind:
-            hand.pop()
+            hand.remove(card)
             
-            return True
+        return True
     
-    return True
+    return False
         
 
 def play(computer_hand, human_hand, deck):
@@ -41,19 +42,29 @@ def play(computer_hand, human_hand, deck):
         if not computer_hand:
             print("Out of cards! I draw 5!")
             for _ in range(5):
-                human_hand.append(deck.deal())
+                computer_hand.append(deck.deal())
+                
+            if deck < 5:
+                print("The deck is empty!")
+    
+                if human_points > computer_points:
+                        print("You win!")
+                elif computer_points > human_points:
+                        print("The computer wins!")
+                else:
+                        print("It's a tie!")      
         
         if turn%2 == 0:
             print("Your turn!")
             player = human_hand
             opponent = computer_hand
-            points = human_points
+            human_points = human_points
             
             if check_four_kind(player):
-                points += 1
+                human_points += 1
                 print("  Point awarded!")
             
-            for i in range(human_hand):
+            for i in range(len(human_hand)):
                 print("    {0}: {1}".format(i, str(human_hand[i])))
             
             guess = int(input("Choose a card index in your hand!\n"))
@@ -61,13 +72,13 @@ def play(computer_hand, human_hand, deck):
             print("My turn!")
             player = computer_hand
             opponent = human_hand
-            points = computer_points
+            computer_points = computer_points
             
             if check_four_kind(player):
-                points += 1
+                computer_points += 1
                 print("  Point awarded!")
             
-            guess = randint(0, len(computer_hand))
+            guess = randint(0, len(computer_hand)-1)
         
         print("  Do you have a {0}?".format(player[guess].value()))
         
@@ -75,18 +86,15 @@ def play(computer_hand, human_hand, deck):
             print("    I have {0} {1}!".format(opponent.count(player[guess]), player[guess].value()))
             
             while player[guess] in opponent:
-                player.append(opponent.remove(player[guess]))
-        
-            if check_four_kind(player):
-                points += 1
-                print("  Point awarded!")
+                index = opponent.index(player[guess])
+                player.append(opponent.pop(index))
             
         else:
-            print("    Go fish!")
-            human_hand.append(deck.deal())
+            print("    Go fish!    ")
+            player.append(deck.deal())
             turn += 1
             
-        print("The score is {0} to {1}!".format(human_points, computer_points))
+        print("The score is {0} human to {1} computer!".format(human_points, computer_points))
     
     print("The deck is empty!")
     
@@ -97,5 +105,6 @@ def play(computer_hand, human_hand, deck):
     else:
         print("It's a tie!")
         
+
 if __name__ == '__main__':
     main()
