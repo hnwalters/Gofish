@@ -1,3 +1,4 @@
+#Hayden N. Walters
 #import pdb; pdb.set_trace()
 from random import shuffle
 
@@ -11,7 +12,7 @@ class Card(object):
         return "{0} of {1}".format(self.value(), self._suit)
 
     def __eq__(self, other):
-        return self._number == other._suit
+        return self._number == other._number
     
     def __ne__(self, other):
         return not self == other

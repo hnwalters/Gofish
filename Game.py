@@ -1,3 +1,4 @@
+#Hayden N. Walters
 #import pdb; pdb.set_trace()
 from Deck import Deck
 from random import randint
@@ -66,6 +67,8 @@ def play(computer_hand, human_hand, deck):
             
             for i in range(len(human_hand)):
                 print("    {0}: {1}".format(i, str(human_hand[i])))
+            for i in range(len(computer_hand)):
+                print("    {0}: {1}".format(i, str(computer_hand[i])))
             
             guess = int(input("Choose a card index in your hand!\n"))
         else:
@@ -77,8 +80,10 @@ def play(computer_hand, human_hand, deck):
             if check_four_kind(player):
                 computer_points += 1
                 print("  Point awarded!")
-            
-            guess = randint(0, len(computer_hand)-1)
+            if len(computer_hand) > 1:
+                guess = randint(0, len(computer_hand)-1)
+            else:
+                break
         
         print("  Do you have a {0}?".format(player[guess].value()))
         
